@@ -6,11 +6,13 @@ import { AppService } from './app.service.js';
 import { appConfig, artifactsConfig, httpConfig, jobConfig, labConfig, workerConfig } from './config/configuration.js';
 import { validateEnv } from './config/env.schema.js';
 import { ConfigModule } from '@nestjs/config';
+import { FunctionsModule } from './modules/functions/functions.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
 @Module({
   imports: [
+    FunctionsModule,
     ConfigModule.forRoot({
       isGlobal: true,
       validate: (config) => validateEnv(config),
