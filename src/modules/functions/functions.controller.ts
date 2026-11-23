@@ -5,6 +5,7 @@ import { CreateFunctionDto } from "./dto/create-function.dto.js";
 import { UpdateFunctionDto } from "./dto/update-function.dto.js";
 import { ListFunctionsQuery } from "./dto/list-functions.query.js";
 import { FunctionEntity } from "../../domain/function.js";
+import { ClientId } from "../../common/decorators/client-id.decorator.js";
 
 @ApiTags('functions')
 @Controller({ path: 'functions', version: '1' })
@@ -12,8 +13,8 @@ export class FunctionsController {
   constructor(private readonly functions: FunctionsService) { }
 
   @Post()
-  create(@Body() dto: CreateFunctionDto, @Headers('x-client-id') ownerClientId = 'anonymous'): Promise<FunctionEntity> {
-    return this.functions.create(dto, ownerClientId)
+  create(@Body() dto: CreateFunctionDto, @ClientId() clientId: string): Promise<FunctionEntity> {
+    return this.functions.create(dto, clientId)
   }
 
   @Get(":id")

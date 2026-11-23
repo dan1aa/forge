@@ -5,6 +5,9 @@ import { appConfig, artifactsConfig, httpConfig, jobConfig, labConfig, workerCon
 import { validateEnv } from './config/env.schema.js';
 import { ConfigModule } from '@nestjs/config';
 import { FunctionsModule } from './modules/functions/functions.module.js';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter.js';
+import { ClientIdGuard } from './common/guards/client-id.guard.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -33,6 +36,6 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     }),
   ],
   controllers: [],
-  providers: [],
+  providers: [{provide: APP_FILTER, useClass: AllExceptionsFilter}, {provide: APP_GUARD, useClass: ClientIdGuard}],
 })
 export class AppModule {}
